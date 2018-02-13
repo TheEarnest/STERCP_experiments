@@ -2,7 +2,7 @@
 #SBATCH --account=nn9385k
 #SBATCH --job-name=ECHAM6_t1SP_a9
 #SBATCH --output=r_ECHAM6_t1SP_a9_out_%j
-##SBATCH --qos=devel
+#SBATCH --qos=devel
 #SBATCH --time=0-0:50:0
 #SBATCH --nodes=8 --ntasks-per-node=32
 #SBATCH --mail-type=ALL
@@ -188,8 +188,8 @@ export file_permits=644
 
 integer nproca_atm nprocb_atm nproma_atm nthreadatm
 
-nproca_atm=16  # total number of MPI procs:
-nprocb_atm=16   #    nproca_atm * nprocb_atm
+nproca_atm=1  # total number of MPI procs:
+nprocb_atm=1   #    nproca_atm * nprocb_atm
 nthreadatm=1   # number of openMP threads (overwrites OMP_NUM_THREADS)
 nproma_atm=72
 
@@ -1213,12 +1213,10 @@ printf "%s\n"   " |- Model launched at \$(date)                              "
 printf "%s\n\n" " |---------------------------------------------------------|"
 
 
-    rm -f mpmd.lst
-    n=0
-    (( n2 = n + nprocatm -1 ))
-    echo "${n1}-${n} ./${atmexec}" >> mpmd.lst
 
     paffopt=" -n ${nprocatm} "
+  MPIBIN=" "
+  paffopt=" "
  time  ${MPIBIN} ${paffopt} ./${atmexec}  1> ${outlogfile} 2> ${outerrfile}  || {
  printf "\n%s\n" " |---------------------------------------------------------|"
  printf "%s\n"   " |- ERROR in model integration                              "
